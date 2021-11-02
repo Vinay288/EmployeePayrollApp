@@ -1,5 +1,6 @@
 package com.bridgelabz.employeepayrollapp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,34 +11,39 @@ import com.bridgelabz.employeepayrollapp.model.EmployeePayrollData;
 @Service
 public class EmployeePayrollService implements IEmployeePayrollService {
 
+	private List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
+
 	@Override
 	public List<EmployeePayrollData> getEmployeePayrollData() {
-		// TODO Auto-generated method stub
-		return null;
+		return employeePayrollList;
 	}
 
 	@Override
 	public EmployeePayrollData getEmployeePayrollDataById(int employeeId) {
-		// TODO Auto-generated method stub
-		return null;
+		return employeePayrollList.get(employeeId - 1);
 	}
 
 	@Override
 	public EmployeePayrollData createEmployeePayrollData(EmployeePayrollDTO employeePayrollDTO) {
-		// TODO Auto-generated method stub
-		return null;
+		EmployeePayrollData employeePayrollData = new EmployeePayrollData(employeePayrollList.size() + 1,
+				employeePayrollDTO);
+		employeePayrollList.add(employeePayrollData);
+		return employeePayrollData;
 	}
 
 	@Override
-	public EmployeePayrollData updateEmployeePayrollData(EmployeePayrollDTO employeePayrollDTO) {
-		// TODO Auto-generated method stub
-		return null;
+	public EmployeePayrollData updateEmployeePayrollData(int employeeId, EmployeePayrollDTO employeePayrollDTO) {
+		EmployeePayrollData employeePayrollData = this.getEmployeePayrollDataById(employeeId);
+		employeePayrollData.setName(employeePayrollDTO.name);
+		employeePayrollData.setSalary(employeePayrollDTO.salary);
+		employeePayrollList.set(employeeId - 1, employeePayrollData);
+		return employeePayrollData;
 	}
 
 	@Override
 	public void deleteEmployeePayrollData(int employeeId) {
-		// TODO Auto-generated method stub
-		
+		employeePayrollList.remove(employeeId - 1);
+
 	}
 
 }
