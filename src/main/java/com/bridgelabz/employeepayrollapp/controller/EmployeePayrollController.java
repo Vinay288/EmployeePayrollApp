@@ -10,13 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.employeepayrollapp.dto.EmployeePayrollDTO;
+import com.bridgelabz.employeepayrollapp.dto.ResponseDTO;
 import com.bridgelabz.employeepayrollapp.model.Employee;
+import com.bridgelabz.employeepayrollapp.model.EmployeePayrollData;
 
 @RestController
 public class EmployeePayrollController {
-	@RequestMapping(value = { "", "/", "/home" })
-	public ResponseEntity<String> sayHello() {
-		return new ResponseEntity<String>("Hello world!", HttpStatus.OK);
+	@RequestMapping(value = { "", "/", "/get" })
+	public ResponseEntity<ResponseDTO> getEmployeePayrollData() {
+		EmployeePayrollData employeePayrollData=new EmployeePayrollData(1,new EmployeePayrollDTO("Vinay", 1000000));
+		ResponseDTO response=new ResponseDTO("Success", employeePayrollData);
+		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
 	}
 
 	@RequestMapping(value = { "/query" })
