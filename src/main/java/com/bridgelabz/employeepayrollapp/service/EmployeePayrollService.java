@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.employeepayrollapp.dto.EmployeePayrollDTO;
+import com.bridgelabz.employeepayrollapp.exceptions.EmployeePayrollException;
 import com.bridgelabz.employeepayrollapp.model.EmployeePayrollData;
 
 @Service
@@ -20,7 +21,8 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 
 	@Override
 	public EmployeePayrollData getEmployeePayrollDataById(int employeeId) {
-		return employeePayrollList.get(employeeId - 1);
+		return employeePayrollList.stream().filter(empData -> empData.getEmployeeId() == employeeId).findFirst()
+				.orElseThrow(() -> new EmployeePayrollException("Employee Not Found"));
 	}
 
 	@Override
@@ -33,6 +35,8 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 
 	@Override
 	public EmployeePayrollData updateEmployeePayrollData(int employeeId, EmployeePayrollDTO employeePayrollDTO) {
+		employeePayrollList.stream().filter(empData -> empData.getEmployeeId() == employeeId).findFirst()
+				.orElseThrow(() -> new EmployeePayrollException("Employee Not Found"));
 		EmployeePayrollData employeePayrollData = this.getEmployeePayrollDataById(employeeId);
 		employeePayrollData.setName(employeePayrollDTO.name);
 		employeePayrollData.setSalary(employeePayrollDTO.salary);
@@ -42,6 +46,8 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 
 	@Override
 	public void deleteEmployeePayrollData(int employeeId) {
+		employeePayrollList.stream().filter(empData -> empData.getEmployeeId() == employeeId).findFirst()
+				.orElseThrow(() -> new EmployeePayrollException("Employee Not Found"));
 		employeePayrollList.remove(employeeId - 1);
 
 	}
